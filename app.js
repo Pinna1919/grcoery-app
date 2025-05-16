@@ -1,28 +1,26 @@
-// Check if user is logged in
-auth.onAuthStateChanged(user => {
-  const onIndex = window.location.pathname.includes("index.html");
-  const onLogin = window.location.pathname.includes("login.html");
+// Import required Firebase modules
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  if (!user && onIndex) {
-    window.location.href = "login.html";
-  }
-  if (user && onLogin) {
-    window.location.href = "index.html";
-  }
-});
+// Initialize Firebase Authentication
+const auth = getAuth();
 
-// Sign up function
+// Sign Up function
 function signup() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      alert("Sign up successful!");
-      window.location.href = "index.html";
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("Signed up successfully: ", user);
+      alert("Signup successful!");
+      // Redirect to another page after signup
+      window.location.href = "order.html"; // Or another page you want
     })
-    .catch(error => {
-      alert(error.message);
+    .catch((error) => {
+      const errorMessage = error.message;
+      console.log("Error during signup: ", errorMessage);
+      alert(errorMessage);
     });
 }
 
@@ -31,45 +29,17 @@ function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      alert("Logged in!");
-      window.location.href = "index.html";
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("Logged in successfully: ", user);
+      alert("Login successful!");
+      // Redirect to another page after login
+      window.location.href = "order.html"; // Or another page you want
     })
-    .catch(error => {
-      alert(error.message);
+    .catch((error) => {
+      const errorMessage = error.message;
+      console.log("Error during login: ", errorMessage);
+      alert(errorMessage);
     });
-}
-
-// Logout
-function logout() {
-  auth.signOut()
-    .then(() => {
-      alert("Logged out!");
-      window.location.href = "login.html";
-    });
-}
-
-// Place order
-function placeOrder() {
-  const product = document.getElementById("product").value;
-  const quantity = parseInt(document.getElementById("quantity").value);
-
-  const user = auth.currentUser;
-  if (!user) {
-    alert("Please log in first.");
-    return;
-  }
-
-  db.collection("orders").add({
-    userId: user.uid,
-    email: user.email,
-    product,
-    quantity,
-    timestamp: new Date().toISOString()
-  }).then(() => {
-    alert("Order placed!");
-  }).catch(err => {
-    alert("Error placing order: " + err.message);
-  });
 }
