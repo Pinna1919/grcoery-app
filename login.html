@@ -5,15 +5,21 @@
 
   <!-- Link to your CSS file -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase SDK (Modular version for Firebase v10+) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-  <script src="firebaseConfig.js"></script>
-  <script src="app.js" defer></script>
+
+  <!-- Firebase Config and App Script -->
+  <script src="firebaseConfig.js"></script> <!-- Your Firebase configuration file -->
+  <script src="app.js" defer></script> <!-- Your main app JS file -->
 </head>
 <body>
   <h2>Login or Sign Up</h2>
-  <input type="email" id="email" placeholder="Email"><br><br>
-  <input type="password" id="password" placeholder="Password"><br><br>
+
+  <input type="email" id="email" placeholder="Email" required><br><br>
+  <input type="password" id="password" placeholder="Password" required><br><br>
+
   <button onclick="login()">Login</button>
   <button onclick="signup()">Sign Up</button>
 </body>
